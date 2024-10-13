@@ -2,8 +2,7 @@ package com.microservices.accounts.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.boot.autoconfigure.web.WebProperties;
+
 
 @Entity
 @Getter
