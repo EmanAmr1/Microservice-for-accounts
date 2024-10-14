@@ -18,9 +18,8 @@ import java.util.Random;
 @Service
 public class AccountsServiceImpl implements AccountsService {
 
-    private  final customerRepo customerRepo;
+    private final customerRepo customerRepo;
     private final accountRepo accountRepo;
-
     public AccountsServiceImpl(customerRepo customerRepo, com.microservices.accounts.repository.accountRepo accountRepo) {
         this.customerRepo = customerRepo;
         this.accountRepo = accountRepo;
@@ -31,7 +30,7 @@ public class AccountsServiceImpl implements AccountsService {
         Customer customer = CustomerMapper.maptoCustomer(customerDto,new Customer());
         Optional<Customer> existingCustomer = customerRepo.findByMobileNumber(customerDto.getMobileNumber());
          if (existingCustomer.isPresent()) {
-             throw new CustomerAleardyExistException("THIS CUSTOMER ALREADY EXISTS"+customerDto.getMobileNumber());
+             throw new CustomerAleardyExistException("THIS CUSTOMER ALREADY EXISTS with mobile number : "+customerDto.getMobileNumber());
          }
          customer.setCreatedAt(LocalDateTime.now());
          customer.setCreatedBy("eman");

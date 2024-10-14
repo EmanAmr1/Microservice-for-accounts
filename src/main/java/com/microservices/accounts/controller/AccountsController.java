@@ -3,7 +3,6 @@ package com.microservices.accounts.controller;
 import com.microservices.accounts.constants.AccountsConstants;
 import com.microservices.accounts.dto.CustomerDto;
 import com.microservices.accounts.dto.ResponseDto;
-import com.microservices.accounts.entity.Customer;
 import com.microservices.accounts.service.AccountsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +16,6 @@ import java.awt.*;
 public class AccountsController {
 
     private final AccountsService accountsService;
-
     public AccountsController(AccountsService accountsService) {
         this.accountsService = accountsService;
     }
