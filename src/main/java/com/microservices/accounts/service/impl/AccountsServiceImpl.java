@@ -1,10 +1,13 @@
 package com.microservices.accounts.service.impl;
 
 import com.microservices.accounts.constants.AccountsConstants;
+import com.microservices.accounts.dto.AccountsDto;
 import com.microservices.accounts.dto.CustomerDto;
 import com.microservices.accounts.entity.Accounts;
 import com.microservices.accounts.entity.Customer;
 import com.microservices.accounts.exception.CustomerAleardyExistException;
+import com.microservices.accounts.exception.ResourceNotFoundException;
+import com.microservices.accounts.mapper.AccountsMapper;
 import com.microservices.accounts.mapper.CustomerMapper;
 import com.microservices.accounts.repository.accountRepo;
 import com.microservices.accounts.repository.customerRepo;
@@ -39,11 +42,15 @@ public class AccountsServiceImpl implements AccountsService {
 
     }
 
+
+
     private Accounts createNewAccount(Customer customer){
         Accounts accounts = new Accounts();
 
         accounts.setCustomerId(customer.getCustomerId());
         Long randomAccNumber =100000l +new Random().nextInt(90000000);
+        accounts.setEmail(customer.getEmail());
+        accounts.setMobileNumber(customer.getMobileNumber());
         accounts.setAccountNumber(randomAccNumber);
         accounts.setAccountType(AccountsConstants.SAVINGS);
         accounts.setBranchAddress(AccountsConstants.ADDRESS);
@@ -51,4 +58,22 @@ public class AccountsServiceImpl implements AccountsService {
         accounts.setCreatedBy("eman");
         return  accounts;
     }
+
+    @Override
+    public CustomerDto fetchAccount(String mobileNumber) {
+
+      Customer customer=  customerRepo.findByMobileNumber(mobileNumber).orElseThrow(
+                ()->new ResourceNotFoundException("Customer","Mobile Number",mobileNumber)
+        );
+
+      Accounts accounts=  accountRepo.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                ()->new ResourceNotFoundException("Account","Customer id",customer.getCustomerId().toString())
+        );
+
+      CustomerDto customerDto= CustomerMapper.mapToCustomerDto(new CustomerDto(),customer);
+      customerDto.setAccountsDto(AccountsMapper.mapTOAccountDto(new AccountsDto(),accounts));
+
+        return customerDto;
+    }
+
 }
