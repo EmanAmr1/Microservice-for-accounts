@@ -12,6 +12,7 @@ import com.microservices.accounts.mapper.CustomerMapper;
 import com.microservices.accounts.repository.accountRepo;
 import com.microservices.accounts.repository.customerRepo;
 import com.microservices.accounts.service.AccountsService;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -74,6 +75,34 @@ public class AccountsServiceImpl implements AccountsService {
       customerDto.setAccountsDto(AccountsMapper.mapTOAccountDto(new AccountsDto(),accounts));
 
         return customerDto;
+    }
+
+
+
+    @Override
+    public boolean updateAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+
+       AccountsDto accountsDto=customerDto.getAccountsDto(); //FIRST GET ACCOUNT
+
+       if(accountsDto!=null) { //IF ACCOUNT EXIST GET ITS ACCOUNT NUMBER AND ITS CUSTOMER
+
+           Accounts accounts = accountRepo.findById(accountsDto.getAccountNumber()).orElseThrow(
+                   () -> new ResourceNotFoundException("Account", "Account number", accountsDto.getAccountNumber().toString())
+           );
+
+           Long customerId = accounts.getCustomerId(); //GET CUSTOMER OF THIS ACCOUNT
+           Customer customer = customerRepo.findById(customerId).orElseThrow( //IF EXIST SAVE IT IN CUSTOMER OBJ
+                   () -> new ResourceNotFoundException("Customer", "Customer id", customerId.toString())
+           );
+
+           CustomerMapper.maptoCustomer(new CustomerDto(),customer);
+
+           customerRepo.save(customer);
+           isUpdated = true;
+
+       }
+        return false;
     }
 
 }
