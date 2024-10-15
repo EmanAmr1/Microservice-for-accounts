@@ -96,13 +96,14 @@ public class AccountsServiceImpl implements AccountsService {
                    () -> new ResourceNotFoundException("Customer", "Customer id", customerId.toString())
            );
 
-           CustomerMapper.maptoCustomer(new CustomerDto(),customer);
+           CustomerMapper.maptoCustomer(customerDto,customer);
 
            customerRepo.save(customer);
            isUpdated = true;
 
        }
-        return false;
+
+        return isUpdated;
     }
 
 }
