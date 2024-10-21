@@ -1,7 +1,10 @@
 package com.microservices.cards.Service.Impl;
 
+import com.microservices.cards.Dto.CardsDto;
 import com.microservices.cards.Entity.Cards;
 import com.microservices.cards.Exception.CardAlreadyExistsException;
+import com.microservices.cards.Exception.ResourceNotFoundException;
+import com.microservices.cards.Mapper.CardsMapper;
 import com.microservices.cards.Repo.CardsRepo;
 import com.microservices.cards.Service.CardsService;
 import com.microservices.cards.constants.CardsConstants;
@@ -38,5 +41,14 @@ public class CardsServiceImpl implements CardsService {
         newCard.setAvailableAmount(CardsConstants.NEW_CARD_LIMIT);
 
         return newCard;
+    }
+
+
+    public CardsDto fetchCard(String mobileNumber){
+     Cards card=  cardsRepo.findByMobileNumber(mobileNumber).orElseThrow(
+             ()-> new ResourceNotFoundException("card","mobile number",mobileNumber)
+     );
+         return CardsMapper.mapToCardsDto(new CardsDto(),card);
+
     }
 }
