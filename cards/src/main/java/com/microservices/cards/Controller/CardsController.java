@@ -38,7 +38,7 @@ public class CardsController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updateCard(@RequestParam CardsDto cardsDto) {
+    public ResponseEntity<ResponseDto> updateCard(@RequestBody CardsDto cardsDto) {
         boolean isUpdated = cardsService.updateCard(cardsDto);
         if (isUpdated) {
             return ResponseEntity.status(HttpStatus.OK)
