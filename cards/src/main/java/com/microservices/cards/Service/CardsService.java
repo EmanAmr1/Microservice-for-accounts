@@ -7,4 +7,6 @@ public interface CardsService {
     public void createCards(String mobileNumber);
 
     public CardsDto fetchCard(String mobileNumber);
+
+    public boolean updateCard(CardsDto cardsDto);
 }

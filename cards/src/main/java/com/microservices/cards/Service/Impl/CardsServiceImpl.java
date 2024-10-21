@@ -43,12 +43,25 @@ public class CardsServiceImpl implements CardsService {
         return newCard;
     }
 
-
+    @Override
     public CardsDto fetchCard(String mobileNumber){
      Cards card=  cardsRepo.findByMobileNumber(mobileNumber).orElseThrow(
              ()-> new ResourceNotFoundException("card","mobile number",mobileNumber)
      );
          return CardsMapper.mapToCardsDto(new CardsDto(),card);
 
+    }
+
+    @Override
+    public boolean updateCard(CardsDto cardsDto){
+
+        Cards card =cardsRepo.findByCardNumber(cardsDto.getCardNumber()).orElseThrow(
+                ()-> new ResourceNotFoundException("Card","Card Number", cardsDto.getCardNumber())
+        );
+
+        CardsMapper.mapToCardsDto(cardsDto,card);
+        cardsRepo.save(card);
+
+        return true;
     }
 }
