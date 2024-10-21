@@ -50,4 +50,17 @@ public class CardsController {
             }
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDto> deleteCard(@RequestParam String mobileNumber){
+        boolean isDeleted =cardsService.deleteCard(mobileNumber);
+        if(isDeleted)
+        {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDto(CardsConstants.STATUS_200,CardsConstants.MESSAGE_200));
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDto(CardsConstants.STATUS_417,CardsConstants.MESSAGE_417_DELETE));
+        }
+    }
+
 }

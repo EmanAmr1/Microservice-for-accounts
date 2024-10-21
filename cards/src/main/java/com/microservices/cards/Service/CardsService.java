@@ -9,4 +9,6 @@ public interface CardsService {
     public CardsDto fetchCard(String mobileNumber);
 
     public boolean updateCard(CardsDto cardsDto);
+
+    public boolean deleteCard(String mobileNumber);
 }
