@@ -4,6 +4,8 @@ import com.microservices.loans.Constants.LoansConstants;
 import com.microservices.loans.Dto.LoansDto;
 import com.microservices.loans.Entity.Loans;
 import com.microservices.loans.Exception.LoanAlreadyExistsException;
+import com.microservices.loans.Exception.ResourceNotFoundException;
+import com.microservices.loans.Mapper.LoansMapper;
 import com.microservices.loans.Repo.LoansRepo;
 import com.microservices.loans.Service.LoansService;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class LoansServiceImpl implements LoansService {
         loansRepo.save(createNewLoan(mobileNumber));
     }
 
+
     private Loans createNewLoan(String mobileNumber){
         Loans newLoan = new Loans();
         long randomLoanNumber = 100000000000L + new Random().nextInt(900000000);
@@ -39,5 +42,13 @@ public class LoansServiceImpl implements LoansService {
         newLoan.setAmountPaid(0);
         newLoan.setOutstandingAmount(LoansConstants.NEW_LOAN_LIMIT);
         return newLoan;
+    }
+
+    @Override
+    public LoansDto fetchLoan(String mobileNumber) {
+       Loans loan = loansRepo.findByMobileNumber(mobileNumber).orElseThrow(
+               ()-> new ResourceNotFoundException("Loan","Mobile Number",mobileNumber)
+       );
+      return  LoansMapper.mapLoansToDto(loan,new LoansDto());
     }
 }
