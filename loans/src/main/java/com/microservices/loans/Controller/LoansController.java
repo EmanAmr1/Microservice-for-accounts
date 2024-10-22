@@ -49,4 +49,16 @@ public class LoansController {
 
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDto> deleteLoan(@RequestParam String mobileNumber) {
+        boolean isDeleted=loansService.deleteLoan(mobileNumber);
+        if(isDeleted) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
+        }else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDto(LoansConstants.STATUS_417,LoansConstants.MESSAGE_417_DELETE));
+        }
+    }
+
 }

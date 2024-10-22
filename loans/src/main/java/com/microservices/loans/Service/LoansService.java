@@ -9,4 +9,6 @@ public interface LoansService {
     public LoansDto fetchLoan(String mobileNumber);
 
     public boolean updateLoan(LoansDto loansDto);
+
+    public boolean deleteLoan(String mobileNumber);
 }
