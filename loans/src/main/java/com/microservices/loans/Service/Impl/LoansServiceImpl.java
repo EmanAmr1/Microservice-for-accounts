@@ -67,7 +67,7 @@ public class LoansServiceImpl implements LoansService {
         Loans loan = loansRepo.findByMobileNumber(mobileNumber).orElseThrow(
                 ()-> new ResourceNotFoundException("Loan","Mobile Number",mobileNumber)
         );
-        loansRepo.delete(loan);
+        loansRepo.deleteById(loan.getLoanId());
 
         return true;
     }

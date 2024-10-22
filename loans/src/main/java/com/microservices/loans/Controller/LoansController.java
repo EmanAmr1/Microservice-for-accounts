@@ -43,7 +43,7 @@ public class LoansController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updateLoan(@Valid @RequestParam LoansDto loansDto) {
+    public ResponseEntity<ResponseDto> updateLoan(@Valid @RequestBody LoansDto loansDto) {
         boolean isUpdated=loansService.updateLoan(loansDto);
         if(isUpdated) {
             return ResponseEntity.status(HttpStatus.OK)

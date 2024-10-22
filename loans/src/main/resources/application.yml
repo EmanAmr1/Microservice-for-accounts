@@ -1,3 +1,7 @@
+server:
+    port: 8090
+
+
 spring:
     application:
         name: loans
@@ -18,5 +22,4 @@ jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
 
-server:
-    port: 8090
+
