@@ -36,4 +36,17 @@ public class LoansController {
                 .body(loansDto);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto> updateLoan(@RequestParam LoansDto loansDto) {
+        boolean isUpdated=loansService.updateLoan(loansDto);
+        if(isUpdated) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
+        }else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDto(LoansConstants.STATUS_417,LoansConstants.MESSAGE_417_UPDATE));
+        }
+
+    }
+
 }
